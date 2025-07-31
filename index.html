@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- HEADER -->
+    <header class="header">
+      <h1>Admin Dashboard</h1>
+      <button id="themeToggle">Toggle Theme</button>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Users</a></li>
+          <li><a href="#">Settings</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <h2>Welcome to the Admin Panel</h2>
+      <p>This is your main content area for data, reports, and visualizations.</p>
+      <canvas id="myChart" width="400" height="200"></canvas>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>&copy; 2025 Nimbus Dashboard. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- JavaScript: Theme Switching & Chart -->
+  <script>
+    const toggleButton = document.getElementById('themeToggle');
+    const body = document.body;
+
+    toggleButton.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      updateChartColors();
+    });
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    const chartConfig = {
+      type: 'bar',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+        datasets: [{
+          label: 'Users',
+          data: [12, 19, 3, 5, 9],
+          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            ticks: {
+              color: getComputedStyle(body).getPropertyValue('--text-color')
+            }
+          },
+          y: {
+            ticks: {
+              color: getComputedStyle(body).getPropertyValue('--text-color')
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: getComputedStyle(body).getPropertyValue('--text-color')
+            }
+          }
+        }
+      }
+    };
+
+    const myChart = new Chart(ctx, chartConfig);
+
+    function updateChartColors() {
+      const textColor = getComputedStyle(body).getPropertyValue('--text-color');
+      myChart.options.scales.x.ticks.color = textColor;
+      myChart.options.scales.y.ticks.color = textColor;
+      myChart.options.plugins.legend.labels.color = textColor;
+      myChart.update();
+    }
+  </script>
+</body>
+</html>
